@@ -1,0 +1,9 @@
+header {
+    height: 120px;
+    font-size: 50px;
+    background-color: aqua;
+    text-align: center;
+}
+.card {
+    margin: 4%;
+}

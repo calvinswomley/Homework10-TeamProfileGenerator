@@ -1,4 +1,4 @@
-const Class = require("../lib/classes.js");
+const Class = require("../lib/Employee.js");
 
 //test name, id, email, getName(), getId(), getEmail(), and getRole(). Code below is an example
 describe("Class", () => {
