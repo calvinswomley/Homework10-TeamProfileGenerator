@@ -1,6 +1,13 @@
 //Packages required for this application
 var inquirer = require('inquirer');
 var fs = require('fs');
+var employeeList = [];
+
+function test() {
+    console.log(employeeList);
+    init();
+}
+
 
 // Command line question prompt and write to file
   function init() {
@@ -41,11 +48,10 @@ var fs = require('fs');
         when: (response) => response.title == 'Engineer',
       },
     ])
-    .then((response) => 
-        fs.appendFile('./dist/employee.json', `${JSON.stringify(response)}\n`, (err) =>
-        console.log("An error occured: " + err)
-        )
-    )
+    .then((response) => {
+       employeeList.push(response);
+       test();
+    })
     .catch((error) => {
       if (error.isTtyError) {
         console.log("There is an error.")
@@ -57,3 +63,5 @@ var fs = require('fs');
   
   // Function call to initialize app
   init();
+
+  module.exports = employeeList;
