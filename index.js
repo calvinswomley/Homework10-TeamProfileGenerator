@@ -1,13 +1,39 @@
 //Packages required for this application
 var inquirer = require('inquirer');
+const Employee = require('./lib/Employee.js');
 var fs = require('fs');
+const { getSystemErrorName } = require('util');
 var employeeList = [];
 
-function test() {
-    console.log(employeeList);
-    init();
+function runClasses() {
+  console.log("success");
 }
 
+
+
+
+function addAnother() {
+  inquirer
+    .prompt(
+      {
+        type: 'confirm',
+        name: 'confirm',
+        message: 'Add another employee?',
+      }
+    )
+    .then((response) => {
+      console.log(response.confirm);
+      //console.log(Employee.getName());
+      response.confirm ? init() : Employee.getName();
+   })
+   .catch((error) => {
+     if (error.isTtyError) {
+       console.log("There is an error.")
+     } else {
+       console.log("Something went wrong.")
+     }
+   })
+ }
 
 // Command line question prompt and write to file
   function init() {
@@ -47,10 +73,16 @@ function test() {
         message: 'GitHub username?',
         when: (response) => response.title == 'Engineer',
       },
+      {
+        type: 'confirm',
+        name: 'confirm',
+        message: 'Add another employee?',
+      },
     ])
     .then((response) => {
        employeeList.push(response);
-       test();
+       response.confirm ? init() : runClasses();
+       addAnother();
     })
     .catch((error) => {
       if (error.isTtyError) {
@@ -63,5 +95,3 @@ function test() {
   
   // Function call to initialize app
   init();
-
-  module.exports = employeeList;
