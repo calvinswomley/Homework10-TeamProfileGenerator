@@ -1,43 +1,39 @@
 //Packages required for this application
-var inquirer = require('inquirer');
+const Inquirer = require('inquirer');
 const Employee = require('./lib/Employee.js');
-var fs = require('fs');
-const { getSystemErrorName } = require('util');
+//const Html = require('./dist/index.html');
+const fs = require('fs');
+//import { getSystemErrorName } from 'util';
 var employeeList = [];
 
 function runClasses() {
-  console.log("success");
-}
-
-
-
-
-function addAnother() {
-  inquirer
-    .prompt(
-      {
-        type: 'confirm',
-        name: 'confirm',
-        message: 'Add another employee?',
+  fs.readFile('./src/card.html', 'utf8', (err, data) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(data);
+      const cardData = data;
+      for (i=0; i < employeeList.length; i++) {
+        fs.appendFile('./dist/index.html', cardData, (appendErr) => appendErr ? console.error(appendErr) : console.info('Success'));
       }
-    )
-    .then((response) => {
-      console.log(response.confirm);
-      //console.log(Employee.getName());
-      response.confirm ? init() : Employee.getName();
-   })
-   .catch((error) => {
-     if (error.isTtyError) {
-       console.log("There is an error.")
-     } else {
-       console.log("Something went wrong.")
-     }
-   })
- }
+    }
+  })
+  fs.readFile('./src/end.html', 'utf8', (err, data) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(data);
+      const endData = data;
+      fs.appendFile('./dist/index.html', endData, (appendErr) => appendErr ? console.error(appendErr) : console.info('Success'));
+    }
+  });
+  //var cardArea = document.querySelector("#cardarea");
+  //var outterDiv = `<div class="card" style="width: 18rem;"></div>`
+}
 
 // Command line question prompt and write to file
   function init() {
-    inquirer
+    Inquirer
     .prompt([
       {
         type: 'input',
@@ -48,6 +44,11 @@ function addAnother() {
         type: 'input',
         name: 'email',
         message: 'What is employee email?',
+      },
+      {
+        type: 'input',
+        name: 'id',
+        message: 'What is employee id?'
       },
       {
         type: 'list',
@@ -81,8 +82,8 @@ function addAnother() {
     ])
     .then((response) => {
        employeeList.push(response);
+       console.log(employeeList);
        response.confirm ? init() : runClasses();
-       addAnother();
     })
     .catch((error) => {
       if (error.isTtyError) {
