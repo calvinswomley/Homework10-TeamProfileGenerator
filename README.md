@@ -3,6 +3,7 @@ Homework 10 Team Profile Generator
 
 ## Contents
 - [Description](#Description)
+- [Screenshot](Screenshot)
 - [Installation](#Installation)
 - [Instructions](#Instructions)
 - [Liscence](#Liscence)
@@ -16,6 +17,9 @@ Homework 10 Team Profile Generator
     This is a command line application that takes user inputs from the command line and outputs a webpage with the inputted information. The user input for this application is information about software engineering team employees and the output is a webpage showing profiles for each team member. This application allows engineering team managers to efficiently convert raw information about employees into a formatted and professional looking webapage.
 
     Core technologies for this application include HTML, JS, Nodejs and the NPM Inquirer package.
+
+## Screenshot:
+![Completed HTML page with team members names and details for each](./app_screenshot.PNG)
 
 ## Installation
     1. Install nodejs on device. Vist https://nodejs.org/en/download/ for instructions.
@@ -42,4 +46,4 @@ Homework 10 Team Profile Generator
     calvinswomley@gmail.com | https://github.com/calvinswomley/Homework10-TeamProfileGenerator
 
 ## Video Recording Link
-    To be added.
+    https://watch.screencastify.com/v/JMlPxVjY5psaHvvofKR3

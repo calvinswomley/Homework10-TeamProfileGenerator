@@ -1,40 +1,24 @@
 //Packages required for this application
-const Inquirer = require('inquirer');
-const Employee = require('./lib/Employee.js');
-//const Html = require('./dist/index.html');
+const inquirer = require('inquirer');
+const employeeExport = require('./lib/Employee.js');
 const fs = require('fs');
-//import { getSystemErrorName } from 'util';
+
 var employeeList = [];
 
-function runClasses() {
-  fs.readFile('./src/card.html', 'utf8', (err, data) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(data);
-      const cardData = data;
-      for (i=0; i < employeeList.length; i++) {
-        fs.appendFile('./dist/index.html', cardData, (appendErr) => appendErr ? console.error(appendErr) : console.info('Success'));
-      }
-    }
-  })
+function endHtmlFile() {
   fs.readFile('./src/end.html', 'utf8', (err, data) => {
     if (err) {
       console.log(err);
     } else {
-      console.log(data);
       const endData = data;
       fs.appendFile('./dist/index.html', endData, (appendErr) => appendErr ? console.error(appendErr) : console.info('Success'));
     }
   });
-  //var cardArea = document.querySelector("#cardarea");
-  //var outterDiv = `<div class="card" style="width: 18rem;"></div>`
 }
 
 // Command line question prompt and write to file
-  function init() {
-    Inquirer
-    .prompt([
+  const promptUser = () => {
+   return inquirer.prompt([
       {
         type: 'input',
         name: 'name',
@@ -80,19 +64,68 @@ function runClasses() {
         message: 'Add another employee?',
       },
     ])
-    .then((response) => {
-       employeeList.push(response);
-       console.log(employeeList);
-       response.confirm ? init() : runClasses();
-    })
-    .catch((error) => {
-      if (error.isTtyError) {
-        console.log("There is an error.")
-      } else {
-        console.log("Something went wrong.")
-      }
-    })
   }
+const generateEngineer = ({ name, email, id, title, github }) =>
+  `<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">${name}</h5>
+        <p class="card-text">${title}</p>
+    </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Id: ${id}</li>
+            <li class="list-group-item">Email: <a href="mailto: ${email}" class="card-link">${email}</a></li>
+            <li class="list-group-item">Github: <a href="https://github.com/${github}" class="card-link">${github}</a></li>
+        </ul>
+  </div>`;
+const generateManager = ({ name, title, id, email, office }) =>
+  `<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">${name}</h5>
+        <p class="card-text">${title}</p>
+    </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Id: ${id}</li>
+            <li class="list-group-item">Email:  <a href="mailto: ${email}" class="card-link">${email}</a></li>
+            <li class="list-group-item">Office: ${office}</li>
+        </ul>
+  </div>`;
+const generateIntern = ({ name, title, id, email, school }) =>
+  `<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">${name}</h5>
+        <p class="card-text">${title}</p>
+    </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Id: ${id}</li>
+            <li class="list-group-item">Email:  <a href="mailto: ${email}" class="card-link">${email}</a></li>
+            <li class="list-group-item">School: ${school}</li>
+        </ul>
+  </div>`;
   
   // Function call to initialize app
-  init();
+const init = () => {
+  promptUser()
+  .then((response) => {
+    if (response.title == 'Engineer'){
+      fs.appendFile('./dist/index.html', generateEngineer(response), (appendErr) => appendErr ? console.error(appendErr) : console.info('Success'));
+      response.confirm ? init() : endHtmlFile();
+    }
+    if (response.title == 'Manager'){
+      fs.appendFile('./dist/index.html', generateManager(response), (appendErr) => appendErr ? console.error(appendErr) : console.info('Success'));
+      response.confirm ? init() : endHtmlFile();
+    };
+    if (response.title == 'Intern'){
+      fs.appendFile('./dist/index.html', generateIntern(response), (appendErr) => appendErr ? console.error(appendErr) : console.info('Success'));
+      response.confirm ? init() : endHtmlFile();
+    };
+  })
+  .catch((error) => {
+    if (error.isTtyError) {
+      console.log("There is an error.")
+    } else {
+      console.log("Something went wrong.")
+    }
+  })
+};
+
+init();
